@@ -19,7 +19,7 @@ on:
         default: "1"
 
 env:
-  TEST_INPUT: ${{ inputs.TEST_INPUT | '1' }}
+  TEST_INPUT: ${{ inputs.TEST_INPUT || '1' }}
   
   # ${{ fromJSON('[${{inputs.TEST_INPUT}} , "1"]')[inputs.TEST_INPUT == ''] }}
 
