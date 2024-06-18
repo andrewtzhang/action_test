@@ -19,7 +19,9 @@ on:
         default: "1"
 
 env:
-  TEST_INPUT: ${{ fromJSON('[${{inputs.TEST_INPUT}} , "1"]')[inputs.TEST_INPUT == ''] }}
+  TEST_INPUT: ${{ inputs.TEST_INPUT | '1' }}
+  
+  # ${{ fromJSON('[${{inputs.TEST_INPUT}} , "1"]')[inputs.TEST_INPUT == ''] }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
