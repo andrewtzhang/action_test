@@ -34,8 +34,8 @@ jobs:
       id: comment
       run: |
         comment='${{ github.event.comment.body }}'
-        test=$(echo '$comment' | grep -oP '(?<=-test ")[^"]+')
-        echo "TEST=${test}" >> $GITHUB_ENV
+        # test=$(echo '$comment' | grep -oP '(?<=-test ")[^"]+')
+        echo "TEST=hello" >> $GITHUB_ENV
     - name: echo
       id: echo
       run: |
