@@ -30,6 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     steps:
+    - uses: actions/checkout@v4
     - name: comment
       id: comment
       uses: ./.github/actions/input_parser
