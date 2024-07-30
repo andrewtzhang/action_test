@@ -1,7 +1,6 @@
 name: 'input parser'
 description: 'parse input'
 if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
-inputs:
 outputs:
   test:
     description: "Random number"
