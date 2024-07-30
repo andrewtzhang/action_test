@@ -1,0 +1,17 @@
+name: 'input parser'
+description: 'parse input'
+if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+inputs:
+outputs:
+  test:
+    description: "Random number"
+    value: ${{ steps.comment.outputs.test }}
+runs:
+  using: "composite"
+  steps:
+    - name: comment
+      id: comment
+      run: |
+        comment='${{ github.event.comment.body }}'
+        # test=$(echo "$comment" | grep -oP '(?<=-test ")[^"]+')
+        echo "test=${test}" >> $GITHUB_OUTPUT
