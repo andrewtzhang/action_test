@@ -10,6 +10,7 @@ runs:
   steps:
     - name: comment
       id: comment
+      shell: bash
       run: |
         comment='${{ github.event.comment.body }}'
         # test=$(echo "$comment" | grep -oP '(?<=-test ")[^"]+')
