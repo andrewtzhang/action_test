@@ -38,10 +38,12 @@ jobs:
       id: echo
       run: |
         echo "test: ${{ steps.comment.outputs.test }}"
+        echo "testcase=allthetests}" >> $GITHUB_ENV
 
   comment:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    needs: [ comment_parser ]
     steps:
       - uses: actions/github-script@v6
         with:
@@ -62,6 +64,8 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+      - name: Dump env context
+        run: echo "${{ env.testcase }}"
       - name: Summary pr
         run: |
           echo "# Test \ ${{ github.event.comment.html_url }}" >> $GITHUB_STEP_SUMMARY
