@@ -32,14 +32,11 @@ jobs:
     steps:
     - name: comment
       id: comment
-      run: |
-        comment='${{ github.event.comment.body }}'
-        # test=$(echo "$comment" | grep -oP '(?<=-test ")[^"]+')
-        echo "TEST=${test}" >> $GITHUB_ENV
+      uses: ./.github/actions/input_parser
     - name: echo
       id: echo
       run: |
-        echo "test: ${{ env.TEST }}"
+        echo "test: ${{ steps.comment.outputs.test }}"
   
   build:
     # The type of runner that the job will run on
