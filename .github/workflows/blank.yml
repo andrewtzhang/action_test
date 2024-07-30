@@ -64,7 +64,7 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - name: Summary pr
         run: |
-          echo "# Test \n ${{ github.event.comment.html_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "# Test \ ${{ github.event.comment.html_url }}" >> $GITHUB_STEP_SUMMARY
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
