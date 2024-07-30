@@ -7,8 +7,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  issue_comment:
+    types: [created]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -26,6 +26,21 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
+  comment_parser:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    steps:
+    - name: comment
+      id: comment
+      run: |
+        comment="${{ github.event.comment.body }}"
+        test=$(echo "$comment" | grep -oP '(?<=-test ")[^"]+')
+        echo "TEST=${test}" >> $GITHUB_ENV
+    - name: echo
+      id: echo
+      run: |
+        echo "test: ${{ env.test }}"
+  
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
