@@ -46,6 +46,12 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
+            const pr_number = context.payload.issue.number;
+            const repo_full_name = context.payload.repository.full_name;
+            const run_id = context.runId;
+            const run_url = `https://github.com/${repo_full_name}/actions/runs/${run_id}`;
+            const comment_body = `Workflow run for this PR: ${run_url}`;
+          
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
