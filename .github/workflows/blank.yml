@@ -38,6 +38,20 @@ jobs:
       id: echo
       run: |
         echo "test: ${{ steps.comment.outputs.test }}"
+
+  comment:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'test'
+            })
   
   build:
     # The type of runner that the job will run on
