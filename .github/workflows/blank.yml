@@ -73,7 +73,7 @@ jobs:
         echo $comment
         echo $line
         echo $command
-        python3 script.py $command
+        eval "python3 script.py $command"
 
   comment:
     runs-on: ubuntu-latest
