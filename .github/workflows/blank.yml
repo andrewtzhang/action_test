@@ -89,6 +89,7 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         with:
+          token: ${{ secrets.PAT }}
           script: |
             const pr_number = context.payload.issue.number;
             const repo_full_name = context.payload.repository.full_name;
