@@ -77,7 +77,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Dump env context
-        run: echo "${{ needs.test_out_outputs.STRING }}"
+        run: echo "${{ needs.test_out.outputs.STRING }}"
       - name: Summary pr
         run: |
           echo "# Test \ ${{ github.event.comment.html_url }}" >> $GITHUB_STEP_SUMMARY
