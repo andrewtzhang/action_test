@@ -20,6 +20,7 @@ on:
 
 env:
   TEST_INPUT: ${{ inputs.TEST_INPUT || '1' }}
+  DEFAULT_TEST: 12345
   
   # ${{ fromJSON('[${{inputs.TEST_INPUT}} , "1"]')[inputs.TEST_INPUT == ''] }}
 
@@ -31,6 +32,7 @@ jobs:
     outputs:
       STRING: ${{ steps.send_out.outputs.PR_SHA }}
     steps:
+    - uses: actions/checkout@v4
     - name: send out
       id: send_out
       run: |
@@ -51,6 +53,19 @@ jobs:
       run: |
         echo "test: ${{ steps.comment.outputs.test }}"
         echo "testcase=allthetests}" >> $GITHUB_ENV
+    - name: py
+      run: |
+        cd ${{github.workspace}}
+        cat > script.py << EOF
+        import argparse
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-t', '--test', type=int, default=${{ env.DEFAULT_TEST }})
+        args = parser.parse_args()
+        print(f"test={args.test}")
+        EOF
+    - name: print
+      run: |
+        cat script.py
 
   comment:
     runs-on: ubuntu-latest
