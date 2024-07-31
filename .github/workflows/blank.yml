@@ -43,9 +43,6 @@ jobs:
   comment_parser:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
-    env:
-      comment: ${{ github.event.comment.body }}
-      
     steps:
     - uses: actions/checkout@v4
     - name: comment
@@ -61,19 +58,29 @@ jobs:
         cd ${{github.workspace}}
         cat > script.py << EOF
         import argparse
+        import os
+        def set_output(name, value):
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+                print(f'{name}={value}', file=fh)
         parser = argparse.ArgumentParser()
         parser.add_argument('-t', '--test', default=${{ env.DEFAULT_TEST }})
         args = parser.parse_args()
-        print(f"test={args.test}")
+        for name, value in vars(args).items(): 
+            if value:
+                set_output(name, value)
+                print(f"{name}={value}")
         EOF
     - name: print
+      id: parse
+      env:
+        comment: ${{ github.event.comment.body }}
       run: |
         line=$(echo "$comment" | grep '/test')
         command=$(echo $line | sed -e 's/\/test//')
-        echo $comment
-        echo $line
-        echo $command
         eval "python3 script.py $command"
+    - name: check
+      run: |
+        echo ${{steps.parse.outputs.test}}
 
   comment:
     runs-on: ubuntu-latest
