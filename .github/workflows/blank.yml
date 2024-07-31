@@ -65,7 +65,10 @@ jobs:
         EOF
     - name: print
       run: |
-        cat script.py
+        comment="${{ github.event.comment.body }}"
+        line=$(echo "$comment" | grep '/test')
+        command=$(echo "$line" | sed 's|/test||' | xargs)
+        python3 script.py $command
 
   comment:
     runs-on: ubuntu-latest
