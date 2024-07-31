@@ -32,6 +32,7 @@ jobs:
       STRING: ${{ steps.send_out.outputs.PR_SHA }}
     steps:
     - name: send out
+      id: send_out
       run: |
         echo "PR_SHA=123456" >> $GITHUB_OUTPUT
     
