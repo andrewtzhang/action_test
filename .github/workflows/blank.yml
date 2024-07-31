@@ -25,6 +25,17 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  test_out:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    outputs:
+      STRING: ${{ steps.send_out.outputs.PR_SHA }}
+    steps:
+    - name: send out
+      run: |
+        echo "PR_SHA=123456" >> $GITHUB_OUTPUT
+    
+
   # This workflow contains a single job called "build"
   comment_parser:
     runs-on: ubuntu-latest
@@ -43,7 +54,7 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
-    needs: [ comment_parser ]
+    needs: [ comment_parser, test_out ]
     steps:
       - uses: actions/github-script@v6
         with:
@@ -65,7 +76,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Dump env context
-        run: echo "${{ env.testcase }}"
+        run: echo "${{ needs.test_out_outputs.STRING }}"
       - name: Summary pr
         run: |
           echo "# Test \ ${{ github.event.comment.html_url }}" >> $GITHUB_STEP_SUMMARY
