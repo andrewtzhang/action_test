@@ -43,6 +43,9 @@ jobs:
   comment_parser:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    env:
+      comment: ${{ github.event.comment.body }}
+      
     steps:
     - uses: actions/checkout@v4
     - name: comment
@@ -65,7 +68,6 @@ jobs:
         EOF
     - name: print
       run: |
-        comment="${{ github.event.comment.body }}"
         line=$(echo "$comment" | grep '/test')
         command=$(echo "$line" | sed 's|/test||' | xargs)
         python3 script.py $command
