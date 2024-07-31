@@ -69,7 +69,7 @@ jobs:
     - name: print
       run: |
         line=$(echo "$comment" | grep '/test')
-        command=$(echo $line | tr -d '/run_sim')
+        command=$(echo $line | tr -d '/test')
         python3 script.py $command
 
   comment:
