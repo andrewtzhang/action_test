@@ -80,7 +80,7 @@ jobs:
         eval "python3 script.py $command"
     - name: check
       run: |
-        echo ${{steps.parse.outputs.test}}
+        echo $DEFAULT_TEST
 
   comment:
     runs-on: ubuntu-latest
